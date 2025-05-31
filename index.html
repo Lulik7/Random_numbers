@@ -1,89 +1,73 @@
-<!DOCTYPE html><html lang="en"> <head> <meta charset="UTF-8" /> <meta name="viewport" content="width=device-width, initial-scale=1.0" /> <title>Random generator</title> <link rel="stylesheet" href="style.css" /> </head> <body> <div class="container"> <h1>Sportloto</h1> <p>Numbers 5 out of 36 are being drawn.</p>
-    <div class="wrapper">
-        <div id="generate-button">
-            <span class="button-text">Generate</span>
-            <div class="button-backgrounds">
-                <div class="button-circle button-circle1"></div>
-                <div class="button-circle button-circle2"></div>
-                <div class="button-circle button-circle3"></div>
-                <div class="button-circle button-circle4"></div>
-            </div>
-        </div>
-    </div>
-
-    <div class="wrapper">
-        <div class="popup">
-            <div class="popup-inside">
-                <div class="backgrounds">
-                    <div class="background"></div>
-                    <div class="background background2"></div>
-                    <div class="background background3"></div>
-                    <div class="background background4"></div>
-                    <div class="background background5"></div>
-                    <div class="background background6"></div>
-                </div>
-            </div>
-            <div class="content">
-                <div class="content-wrapper">
-                    <p
-                            class="try-again"
-                            onclick="document.body.classList.remove('active')"
-                    >
-                        You've successfully generated random numbers!
-                    </p>
-                    <button type="button" id="close-button">Close</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="results-section">
-        <p>
-            <strong>Generated numbers:</strong>
-            <span id="randomNumberOutput"></span>
-        </p>
-        <p><strong>Min:</strong> <span id="minOutput"></span></p>
-        <p><strong>Max:</strong> <span id="maxOutput"></span></p>
-        <p><strong>Average:</strong> <span id="averageOutput"></span></p>
-    </div>
-</div>
-
-<style>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Number Format Converter</title>
+  <style>
     body {
-        font-family: Arial, sans-serif;
-        margin: 20px;
-        background-color: rgba(242, 242, 242, 0.16);
-        color: #333;
+      font-family: Arial, sans-serif;
+      padding: 20px;
     }
-    .container {
-        background-color: #fff;
-        padding: 25px;
-        border-radius: 8px;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        max-width: 600px;
-        margin: 30px auto;
+    input, button {
+      margin: 10px 0;
+      padding: 10px;
+      font-size: 1rem;
     }
-    h1 {
-        color: #0056b3;
-        text-align: center;
-        margin-bottom: 25px;
+    .output {
+      margin-top: 20px;
     }
-    p {
-        margin-bottom: 10px;
-        line-height: 1.5;
+    .output p {
+      font-size: 1.2rem;
     }
-    strong {
-        color: #007bff;
+  </style>
+</head>
+<body>
+  <h1>Number Format Converter</h1>
+  <input type="text" id="numberInput" placeholder="Enter any number">
+  <button onclick="processNumber()">Convert and Analyze</button>
+  <button onclick="evaluateExpression()">Evaluate Expression</button>
+
+  <div class="output" id="output"></div>
+
+  <script>
+    function processNumber() {
+      const input = document.getElementById("numberInput").value.trim();
+      const num = parseFloat(input);
+
+      if (isNaN(num)) {
+        alert("Please enter a valid number.");
+        return;
+      }
+
+      const intPart = Math.trunc(num);
+      const reversedInt = parseInt(Math.abs(intPart).toString().split('').reverse().join('')) * Math.sign(intPart);
+      const sumDigits = Math.abs(intPart).toString().split('').reduce((sum, digit) => sum + parseInt(digit), 0);
+
+      const decimal = num;
+      const binary = (intPart >>> 0).toString(2);
+      const hex = intPart.toString(16);
+
+      document.getElementById("output").innerHTML = `
+        <p><strong>Decimal:</strong> ${decimal}</p>
+        <p><strong>Binary (integer part):</strong> ${binary}</p>
+        <p><strong>Hexadecimal (integer part):</strong> ${hex}</p>
+      `;
+
+      alert("Reversed Integer Part (with sign): " + reversedInt);
+      alert("Sum of Digits (integer part, abs): " + sumDigits);
     }
-    .results-section {
-        border-top: 1px solid #eee;
-        padding-top: 20px;
-        margin-top: 20px;
+
+    function evaluateExpression() {
+      const expression = prompt("Enter a mathematical expression (e.g., 5 + 7 * (3 - 2)):");
+
+      try {
+        const result = Function('"use strict"; return (' + expression + ')')();
+        alert("Result of expression: " + result);
+      } catch (e) {
+        alert("Invalid expression.");
+      }
     }
-    .button-container {
-        text-align: center;
-        margin-top: 20px;
-    }
-</style>
-<script src="script.js"></script>
-</body> </html>
+  </script>
+</body>
+</html>
